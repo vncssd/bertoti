@@ -30,7 +30,7 @@ public class Loja {
         }
     }
 
-    public int lerTamanhoLista(){
+    public int lerQuantidadeProdutos(){
         return produtos.size();
     }
 
