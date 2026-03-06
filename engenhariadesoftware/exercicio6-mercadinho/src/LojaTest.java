@@ -27,7 +27,7 @@ class LojaTest {
         assertEquals(0,loja.getProdutos().size());
     }
     @Test
-    void lerTamanhoLista(){
+    void lerQuantidadeProdutos(){
         Loja loja = new Loja();
 
         Produto produto1 = new Produto("Computador Dell", 3999.90);
@@ -35,7 +35,7 @@ class LojaTest {
         loja.adicionarProduto(produto1);
         loja.adicionarProduto(produto2);
 
-        assertEquals(2,loja.lerTamanhoLista());
+        assertEquals(2,loja.lerQuantidadeProdutos());
 
     }
 }
