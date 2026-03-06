@@ -16,11 +16,24 @@ public class Loja {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
 
     public void adicionarProduto(Produto produto){
         produtos.add(produto);
     }
+
+    public void removerProduto(int index){
+        if (produtos.get(index).equals(null)){
+            System.out.println("PRODUTO NÃO ENCONTRADO");
+        }
+        else{
+            produtos.remove(index);
+        }
+    }
+
+    public int lerTamanhoLista(){
+        return produtos.size();
+    }
+
+
+
 }
