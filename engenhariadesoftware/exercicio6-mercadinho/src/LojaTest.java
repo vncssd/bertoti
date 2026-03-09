@@ -1,4 +1,8 @@
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LojaTest {
@@ -48,7 +52,7 @@ class LojaTest {
         Produto produto2 = new Produto("Suco Maguary Morango 300ml", 9.90);
         Produto produto1copia1 = new Produto("Computador Dell", 3999.90);
 
-        List<Produto> produtosEncontrados = new LinkedList<>();
+        List<Produto> produtosEncontradosTest = new LinkedList<>();
 
         loja.adicionarProduto(produto1);
         loja.adicionarProduto(produto1copia1);
@@ -62,8 +66,8 @@ class LojaTest {
         loja.adicionarProduto(produto1copia3);
         loja.adicionarProduto(produto1copia4);
 
-        produtosEncontrados = loja.encontrarPorNomePreco(produto1);
-        assertEquals(5, produtosEncontrados.size());
+        produtosEncontradosTest = loja.encontrarPorNomePreco(produto1);
+        assertEquals(5, produtosEncontradosTest.size());
 
     }
 }
