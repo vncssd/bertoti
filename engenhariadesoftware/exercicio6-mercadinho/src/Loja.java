@@ -34,6 +34,17 @@ public class Loja {
         return produtos.size();
     }
 
+    public List<Produto> encontrarPorNomePreco(Produto produto){
+        List<Produto> produtosEncontrados = new LinkedList<>();
+        for (Produto prod : produtos){
+            if(produto.comparar(prod)){
+                produtosEncontrados.add(prod);
+            }
+        }
+
+        return produtosEncontrados;
+    }
+
 
 
 }
