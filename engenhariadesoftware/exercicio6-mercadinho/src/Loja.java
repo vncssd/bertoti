@@ -8,14 +8,9 @@ public class Loja {
     public Loja() {
     }
 
-    public Loja(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
-
     public List<Produto> getProdutos() {
         return produtos;
     }
-
 
     public void adicionarProduto(Produto produto){
         produtos.add(produto);
@@ -44,7 +39,5 @@ public class Loja {
 
         return produtosEncontrados;
     }
-
-
 
 }
