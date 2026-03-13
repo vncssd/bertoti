@@ -28,10 +28,7 @@ public class Produto {
     }
 
     public boolean comparar(Produto produto){
-        if (this.nome.equals(produto.nome) && this.preco.equals(produto.preco)){
-            return true;
-        }
-        return false;
+        return this.nome.equals(produto.nome) && this.preco.equals(produto.preco);
     }
 
 }
