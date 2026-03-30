@@ -22,16 +22,19 @@ Tradeoff é a necessidade de abrir mão de um benefício em troca de outro.
 3 - Requisitos não funcionais
  
 **Desempenho**
-Define o tempo que o sistema leva para responder. Um sistema correto mas lento pode ser tão problemático quanto um sistema que não funciona corretamente.
+Define o tempo que o sistema leva para responder. Um sistema correto mas lento pode ser tão problemático quanto um sistema que não funciona corretamente. <br>
 **Segurança**
-Define como o sistema protege dados e funcionalidades contra acessos indevidos. Costuma ser negligenciado no início e é difícil de corrigir depois.
+Define como o sistema protege dados e funcionalidades contra acessos indevidos. Costuma ser negligenciado no início e é difícil de corrigir depois.<br>
 **Escalabilidade**
-É a capacidade do sistema de continuar funcionando bem conforme a demanda cresce. Impacta diretamente as decisões de arquitetura desde o início do projeto.
+É a capacidade do sistema de continuar funcionando bem conforme a demanda cresce. Impacta diretamente as decisões de arquitetura desde o início do projeto.<br>
 **Manutenibilidade**
-Refere-se à facilidade de modificar e evoluir o sistema ao longo do tempo. Um sistema difícil de manter acumula dívida técnica e se torna caro de sustentar.
+Refere-se à facilidade de modificar e evoluir o sistema ao longo do tempo. Um sistema difícil de manter acumula dívida técnica e se torna caro de sustentar.<br>
 **Disponibilidade**
-Define o quanto o sistema precisa estar acessível e no ar. 
+Define o quanto o sistema precisa estar acessível e no ar. <br>
  
 4 - Trade-offs (negociação entre requisitos não funcionais)
  
-Citar e descrever 3 cenários de trade-offs (ver slide 12, mas usar outros exemplos)
+Citar e descrever 3 cenários de trade-offs (ver slide 12, mas usar outros exemplos):
+- **Segurança x Usabilidade:** Uma aplicação pode exigir diversas formas de autentiação, o que aumenta a segurança, mas torna a usabilidade ruim.<br>
+-  **Tempo de desenvolvimento x Qualidade:** Um time, a fim de cumprir alguma data limite, pode precisar entregar um resultado com qualidade menor que a esperada.  <br>
+- **Viés x Variância:** Um modelo muito simples erra por não capturar os padrões dos dados, enquanto um modelo muito complexo erra por memorizar o conjunto de treino e generalizar mal para dados novos. <br>
