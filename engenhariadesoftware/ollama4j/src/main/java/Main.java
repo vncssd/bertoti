@@ -14,6 +14,6 @@ public class Main {
         Long fim = System.nanoTime();
         Long duracao = (fim - inicio) / 1000000000;
 
-        System.out.printf("roteiro gerado em %.2f segundos", duracao);
+        System.out.printf("roteiro gerado em %d segundos", duracao);
     }
 }
