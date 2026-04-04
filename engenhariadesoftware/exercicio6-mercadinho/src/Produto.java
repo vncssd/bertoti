@@ -27,9 +27,15 @@ public class Produto {
         this.preco = preco;
     }
 
-    public boolean comparar(Produto produto){
+    public boolean comparar(Produto produto) {
         return this.nome.equals(produto.nome) && this.preco.equals(produto.preco);
     }
 
+    public boolean filtrarPorPrecoMaior(Double valor) {
+        if (this.preco > valor) {
+            return true;
+        }
+        return false;
+    }
 }
 
