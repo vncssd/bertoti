@@ -1,4 +1,4 @@
-package com.thehecklers.sburrestdemo;
+package com.thehecklers.songscrud;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

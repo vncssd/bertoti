@@ -1,4 +1,4 @@
-package com.thehecklers.sburrestdemo;
+package com.thehecklers.songscrud;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
