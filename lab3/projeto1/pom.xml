@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thehecklers</groupId>
-	<artifactId>sbur-rest-demo</artifactId>
+	<artifactId>songs-crud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sbur-rest-demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>songs-crud</name>
+	<description>CRUD de músicas com Spring Boot e PostgreSQL</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -28,6 +28,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 

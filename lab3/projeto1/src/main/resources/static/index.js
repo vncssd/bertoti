@@ -1,81 +1,135 @@
-i= 0
-function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-  }
+const API_URL = 'http://localhost:8080/songs';
 
-const btnAdd = document.getElementById('submitBtn')
-function Adicionar() {
-    axios.post('http://localhost:8080/coffees', {
-        id: inputID.value,
-        name: nomeCafe.value
-    }) .then(response => {
-        window.location.reload();
-        console.log("Café adicionado", response.data)
-    }).catch(e => {
-        }
-    )
+const modal = document.getElementById('id01');
+const modalTitle = document.getElementById('modalTitle');
+const inputID = document.getElementById('inputID');
+const nomeMusica = document.getElementById('nomeMusica');
+const artistasMusica = document.getElementById('artistasMusica');
+const duracaoMusica = document.getElementById('duracaoMusica');
+const formError = document.getElementById('formError');
+const submitBtn = document.getElementById('submitBtn');
+const songList = document.getElementById('song-list');
+
+let editingId = null; // null = criando, senão = editando essa música
+
+function formatarDuracao(segundos) {
+    const m = Math.floor(segundos / 60);
+    const s = segundos % 60;
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
 }
-btnAdd.addEventListener('click',Adicionar)
-document.addEventListener("DOMContentLoaded", () => {
 
-    fetch("http://localhost:8080/coffees") 
+// Converte "mm:ss" (ou só "ss") em segundos. Retorna null se inválido.
+function parseDuracao(texto) {
+    const match = /^(?:(\d+):)?(\d{1,2})$/.exec(texto.trim());
+    if (!match) return null;
+    const minutos = match[1] ? parseInt(match[1], 10) : 0;
+    const segundos = parseInt(match[2], 10);
+    if (segundos > 59) return null;
+    return minutos * 60 + segundos;
+}
+
+function abrirModal(song) {
+    formError.textContent = '';
+    if (song) {
+        editingId = song.id;
+        modalTitle.textContent = 'Editar música';
+        submitBtn.textContent = 'Salvar';
+        inputID.value = song.id;
+        nomeMusica.value = song.name;
+        artistasMusica.value = song.artists.join(', ');
+        duracaoMusica.value = formatarDuracao(song.duration);
+    } else {
+        editingId = null;
+        modalTitle.textContent = 'Adicionar uma nova música';
+        submitBtn.textContent = 'Adicionar';
+        inputID.value = 'Gerado automaticamente';
+        nomeMusica.value = '';
+        artistasMusica.value = '';
+        duracaoMusica.value = '';
+    }
+    modal.style.display = 'block';
+}
+
+function fecharModal() {
+    modal.style.display = 'none';
+}
+
+function salvar() {
+    const name = nomeMusica.value.trim();
+    const artists = artistasMusica.value.split(',').map(a => a.trim()).filter(a => a);
+    const duration = parseDuracao(duracaoMusica.value);
+
+    if (!name) { formError.textContent = 'Informe o nome da música.'; return; }
+    if (artists.length === 0) { formError.textContent = 'Informe ao menos um artista.'; return; }
+    if (duration === null) { formError.textContent = 'Duração inválida. Use o formato mm:ss (ex: 03:45).'; return; }
+
+    const body = { name, artists, duration };
+    const request = editingId
+        ? axios.put(API_URL + '/' + editingId, { id: editingId, ...body })
+        : axios.post(API_URL, body);
+
+    request
+        .then(response => {
+            console.log('Música salva', response.data);
+            fecharModal();
+            carregarMusicas();
+        })
+        .catch(error => {
+            console.error('Erro ao salvar a música:', error);
+            formError.textContent = 'Erro ao salvar a música.';
+        });
+}
+
+function excluir(song) {
+    axios.delete(API_URL + '/' + song.id)
+        .then(response => {
+            console.log('Deletado', response.data);
+            carregarMusicas();
+        })
+        .catch(error => {
+            console.error('Erro ao deletar', error);
+        });
+}
+
+function criarCelula(texto) {
+    const td = document.createElement('td');
+    td.textContent = texto;
+    return td;
+}
+
+function carregarMusicas() {
+    fetch(API_URL)
         .then(response => response.json())
         .then(data => {
-            
-            const coffeeList = document.getElementById("coffee-list");
-            data.forEach(coffee => {
-                const listItem = document.createElement("li");
-                const deleteButton = document.createElement('button') 
-                const upItem = document.createElement("input")
-                const upButton = document.createElement("button");
-                const inputID = document.getElementById('inputID')
-                const nomeCafe = document.getElementById('nomeCafe')
-                inputID.setAttribute('value',uuidv4())
-                upButton.innerHTML = "Editar nome";
-                deleteButton.innerHTML = "Excluir";
-                listItem.textContent = coffee.name;
-                coffeeList.appendChild(listItem);
-                coffeeList.appendChild(upItem);
-                coffeeList.appendChild(upButton);
-                coffeeList.appendChild(deleteButton);
-                upButton.setAttribute('id',i);
-                
-                upButton.setAttribute('class','btn btn-primary')
-                deleteButton.setAttribute('class','btn btn-danger')
-                i++;
-                upButton.addEventListener('click',Update)
-                deleteButton.addEventListener('click', Excluir)
-                function Update(){
-                   upItemValor = upItem.value;
-                   axios.put("http://localhost:8080/coffees/"+coffee.id , { id: coffee.id, name: upItemValor })
-                   .then(response => {
-                    console.log("Café atualizado com sucesso:", response.data)
-                        listItem.innerText = upItemValor
-                })
-                .catch(error => {
-                    console.error("Erro ao atualizar o café:", error);
-                });
+            songList.innerHTML = '';
+            data.forEach(song => {
+                const tr = document.createElement('tr');
+                tr.appendChild(criarCelula(song.id));
+                tr.appendChild(criarCelula(song.name));
+                tr.appendChild(criarCelula(song.artists.join(', ')));
+                tr.appendChild(criarCelula(formatarDuracao(song.duration)));
 
+                const acoes = document.createElement('td');
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'btn btn-primary';
+                editBtn.addEventListener('click', () => abrirModal(song));
 
-                }
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.className = 'btn btn-danger';
+                deleteBtn.addEventListener('click', () => excluir(song));
 
-                function Excluir(){
-                    axios.delete("http://localhost:8080/coffees/"+coffee.id, { id: coffee.id })
-                    .then(response =>{
-                        console.log('Deletado', response.data)
-                        upButton.remove()
-                        deleteButton.remove()
-                        listItem.remove()
-                        upItem.remove()
-                    })
-                    .catch(error => {
-                        console.error("Erro ao deletar", error)
-                    })
-                }
-
+                acoes.appendChild(editBtn);
+                acoes.appendChild(deleteBtn);
+                tr.appendChild(acoes);
+                songList.appendChild(tr);
             });
-        });
-});
+        })
+        .catch(error => console.error('Erro ao carregar músicas', error));
+}
 
+document.getElementById('openModalBtn').addEventListener('click', () => abrirModal(null));
+document.getElementById('closeModalBtn').addEventListener('click', fecharModal);
+submitBtn.addEventListener('click', salvar);
+document.addEventListener('DOMContentLoaded', carregarMusicas);
